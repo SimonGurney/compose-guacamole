@@ -5,14 +5,12 @@
 FROM mysql
 
 # Update these to stay in line with the official guacamole containers.
-ARG GUAC_REPO=glyptodon/guacamole-client
-ARG GUAC_VERSION=0.9.12-incubating
-
+ARG GUAC_REPO=SimonGurney/compose-guacamole
+ARG GUAC_VERSION=0.9.14
 # Fetch the needed schema files from the guacamole repo and place them where the
 # container will use them when initializing the server.
-ARG BASE_URL=https://raw.githubusercontent.com/${GUAC_REPO}/${GUAC_VERSION}/extensions/guacamole-auth-jdbc/modules/guacamole-auth-jdbc-mysql/schema/
-ADD ${BASE_URL}001-create-schema.sql /docker-entrypoint-initdb.d/
-ADD ${BASE_URL}002-create-admin-user.sql /docker-entrypoint-initdb.d/
+ARG BASE_URL=https://raw.githubusercontent.com/${GUAC_REPO}/${GUAC_VERSION}/
+ADD ${BASE_URL}001-initdb.sql /docker-entrypoint-initdb.d/
 
 # Create a simple script that will run before the schema files and modify them
 # to use the database created by the MYSQL_DATABASE environment variable.
